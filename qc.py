@@ -90,12 +90,14 @@ for station in stations:
   for ch in ids:
    
     n,s,loc,chan=ch.split('.')
-
-    resp=irisclient.resp(network,station,location=loc,channel=chan,
-      starttime=UTCDateTime('2004-001T00:00:00.0'),endtime=day+secperday,
-      filename=respfilename(ch))
-    resp=irisclient.evalresp(network,station,loc,chan,
-      filename="%s%s.png" % (qcfigs,ch),output='plot')
+    try:
+		resp=irisclient.resp(network,station,location=loc,channel=chan,
+		  starttime=UTCDateTime('2004-001T00:00:00.0'),endtime=day+secperday,
+		  filename=respfilename(ch))
+		resp=irisclient.evalresp(network,station,loc,chan,
+		  filename="%s%s.png" % (qcfigs,ch),output='plot')
+	except:
+	  print("No response data for channel %s" % (ch))
   data={}
   for ch in ids:
     print(respfilename(ch))

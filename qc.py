@@ -14,7 +14,38 @@ logger = logging.getLogger('log')
 logger.setLevel(logging.DEBUG)
 
 # Should use command line arguments to enter these
-stations=['ASBU','KWBU','NORM','CPCO','SVIC','CRBU']
+stations=['ASBU',
+'CIHL',
+'CPCO',
+'CLCV',
+'CLMS',
+'CLBH',
+'CRST',
+'CLWZ',
+'HUSB',
+'HIYU',
+'JRO',
+'KWBU',
+'NORM',
+'PRLK',
+'SWNB',
+'TMBU',
+'SWF2',
+'SHRK',
+'WIFE',
+'TCBU',
+'STD',
+'VALT',
+'SVIC',
+'STAR',
+'SUG',
+'SEP',
+'OSBR',
+'PANH',
+'PALM',
+'TIMB',
+'SR41'
+]
 network='CC'
 if len(sys.argv>1):
   day=UTCDateTime(sys.argv[1])

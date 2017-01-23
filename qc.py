@@ -47,7 +47,7 @@ stations=['ASBU',
 'SR41'
 ]
 network='CC'
-if len(sys.argv>1):
+if len(sys.argv)>1:
   day=UTCDateTime(sys.argv[1])
 else:
   day=UTCDateTime('2016-150T00:00:00.0')

@@ -79,7 +79,7 @@ for station in stations:
       #Save data to selected location here
       st.write(filename,format='MSEED',reclen=512)
     except:
-      print("Unable to download data for %s %s" %(sta,str(day)))
+      print("Unable to download data for %s %s" %(station,str(day)))
   # Get all of our channel ids
   ids=[]
   for tr in st:

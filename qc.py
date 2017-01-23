@@ -16,7 +16,10 @@ logger.setLevel(logging.DEBUG)
 # Should use command line arguments to enter these
 stations=['ASBU','KWBU','NORM','CPCO','SVIC','CRBU']
 network='CC'
-day=UTCDateTime('2016-150T00:00:00.0')
+if len(sys.argv>1):
+  day=UTCDateTime(sys.argv[1])
+else:
+  day=UTCDateTime('2016-150T00:00:00.0')
 secperday=24*60*60.
 datadir="data/"
 respdir="resp/"
@@ -40,9 +43,12 @@ for station in stations:
   if os.path.exists(filename):
     st=read(filename)
   else:
-    st=client.get_waveforms(network,station,"*","*",day,day+secperday)
-    #Save data to selected location here
-    st.write(filename,format='MSEED',reclen=512)
+    try:
+      st=client.get_waveforms(network,station,"*","*",day,day+secperday)
+      #Save data to selected location here
+      st.write(filename,format='MSEED',reclen=512)
+    except:
+      print("Unable to download data for %s %s" %(sta,str(day)))
   # Get all of our channel ids
   ids=[]
   for tr in st:

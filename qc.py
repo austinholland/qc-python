@@ -14,7 +14,8 @@ logger = logging.getLogger('log')
 logger.setLevel(logging.DEBUG)
 
 # Should use command line arguments to enter these
-stations=['ASBU',
+stations=[
+'ASBU',
 'CIHL',
 'CPCO',
 'CLCV',
@@ -98,12 +99,16 @@ for station in stations:
 	for ch in ids:
 		print(respfilename(ch))
 		stch=st.select(id=ch) # Just take the data for a single channel
-		ppsd=PPSD(stch[0].stats,metadata=str(respfilename(ch)))
-		ppsd.add(stch)
-		figname="%s%d/%03d/%s.png" % (qcfigs,day.year,day.julday,ch)
-		path_verify(figname)
-		ppsd.plot(figname,cmap=pqlx)
-		data[ch]=ppsd.get_percentile(percentile=50)
+		try:
+			ppsd=PPSD(stch[0].stats,metadata=str(respfilename(ch)))
+			ppsd.add(stch)
+			figname="%s%d/%03d/%s.png" % (qcfigs,day.year,day.julday,ch)
+			path_verify(figname)
+			ppsd.plot(figname,cmap=pqlx)
+			data[ch]=ppsd.get_percentile(percentile=50)
+		except Exception, err:
+			print(str(err))
+			print("Error with PPSD for %s" % (ch))
 	
 	print(data)
     

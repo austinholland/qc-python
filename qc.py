@@ -106,9 +106,8 @@ for station in stations:
 			path_verify(figname)
 			ppsd.plot(figname,cmap=pqlx)
 			data[ch]=ppsd.get_percentile(percentile=50)
-		except Exception, err:
-			print(str(err))
-			print("Error with PPSD for %s" % (ch))
+		except:
+			print("Error with PPSD for %s check for response" % (ch))
 	
 	print(data)
     

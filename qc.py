@@ -1,4 +1,4 @@
-""" Download a day of data and look at the PPSD for that day of data
+""" Download a day of data by Channel and look at the PPSD for that day of data
 """
 from obspy.core import *
 import obspy.clients.fdsn as fdsn
@@ -51,7 +51,6 @@ stations=[
 'STD',
 'VALT',
 'SVIC',
-'STAR',
 'SUG',
 'SEP',
 'OSBR',
@@ -64,7 +63,7 @@ network='CC'
 if len(sys.argv)>1:
   day=UTCDateTime(sys.argv[1])
 else:
-  day=UTCDateTime('2016-150T00:00:00.0')
+  day=UTCDateTime('2017-022T00:00:00.0')
 secperday=24*60*60.
 datadir="data/"
 respdir="resp/"
@@ -77,7 +76,7 @@ path_verify(respdir)
 
 
 
-client=fdsn.Client("IRIS")
+client=fdsn.Client("IRIS",timeout=240)
 
 for station in stations:
   # Look for channel files that already exist
@@ -102,7 +101,9 @@ for station in stations:
   #Write each channel to its own file
   if not files_exist:
     for ch in ids:
-      stch=st.select(ch)
+      #print(st)
+      stch=st.select(id=ch)
+      #print(stch)
       filename="%s%d/%03d/%s.seed" % (datadir,day.year,day.julday,ch)
       path_verify(filename)
       stch.write(filename,format='MSEED',reclen=512)

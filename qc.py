@@ -26,6 +26,26 @@ def path_verify(path):
     pass
   return path
   
+def calc_daily_stats(st):
+  id=st[0].id
+  number_gaps=len(st)-1
+  n_samples=0
+  for tr in st:
+    n_samples+=tr.stats.npts
+    
+  percent_availability=n_samples/(secperday*st[0].stats.sampling_rate)*100.
+  filename="%s%s_stats.npz" %(qcdata,st[0].id)
+  if os.path.exists(filename):
+    npzf=np.load(filename)
+    np.append(npzf['date'],st[0].stats.starttime)
+    np.append(npzf['availability'],percent_availability)
+    np.append(npzf['gaps'],number_gaps)
+    np.savez(filename,date=npzf['date'],availability=npzf['availability'],gaps=npzf['gaps'])
+  else:
+    np.savez(filename,date=np.array(st[0].stats.starttime),
+    availability=np.array(percent_availability),
+    gaps=np.array(number_gaps))
+  
 # Should use command line arguments to enter these
 stations=[
 'ASBU',
@@ -120,6 +140,7 @@ for station in stations:
   for ch in ids:
     print(respfilename(ch))
     stch=st.select(id=ch) # Just take the data for a single channel
+    calc_daily_stats(stch)
     try:
       ppsd=PPSD(stch[0].stats,metadata=str(respfilename(ch)))
       ppsd.add(stch)
